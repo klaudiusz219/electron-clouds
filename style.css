@@ -1,0 +1,16 @@
+body {
+    font-family: "Roboto Mono", monospace;
+    background-image: url('misc/background.jpg'); 
+    background-position: center; 
+  }
+  
+  h1 {
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); 
+  }
+  
+  div {
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); 
+  }
+  

@@ -6,17 +6,32 @@ document.getElementById('getWeatherBtn').addEventListener('click', () => {
 });
 
 ipcRenderer.on('weatherData', (event, data) => {
-  if (data && data.main && data.main.temp) {
-    const weatherInfo = document.getElementById('weatherInfo');
-    weatherInfo.innerHTML = `
-      <h2>Pogoda w ${data.name}</h2>
-      <p>Temperatura: ${data.main.temp}°C</p>
-      <p>Wilgotność: ${data.main.humidity}%</p>
-      <p>Opis: ${data.weather[0].description}</p>
-    `;
+  const weatherInfo = document.getElementById('weatherInfo');
+  weatherInfo.innerHTML = '';
+
+  if (data && data.list && data.city) {
+    const cityName = data.city.name;
+
+    weatherInfo.innerHTML += `<h2><center>Prognoza pogody w ${cityName} na 5 dni</center></h2>`;
+
+    for (let i = 0; i < data.list.length; i += 8) { 
+      const dayData = data.list[i];
+      const date = new Date(dayData.dt * 1000).toLocaleDateString();
+      const temp = dayData.main.temp;
+      const description = dayData.weather[0].description;
+
+      weatherInfo.innerHTML += `
+        <div>
+          <h3>${date}</h3>
+          <p>Temperatura: ${temp}°C</p>
+          <p>Opis: ${description}</p>
+        </div>
+      `;
+      weatherInfo.innerHTML += `<br>`;
+
+    }
   } else {
     console.error("Nieprawidłowe dane pogodowe", data);
-    const weatherInfo = document.getElementById('weatherInfo');
     weatherInfo.innerHTML = `<p style="color: red;">Błąd w nazwie miejscowości, lub miejscowość nie istnieje</p>`;
   }
 });
